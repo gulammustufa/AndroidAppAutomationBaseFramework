@@ -1,6 +1,5 @@
 package com.steps.cucumber;
 
-import utility.Constant;
 import utility.enums.DeviceOwners;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -9,9 +8,7 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import utility.DeviceManager;
 
-import java.io.Console;
-
-public class Hooks extends AbstractSteps {
+public class Hooks extends BaseSteps {
     private DeviceOwners deviceOwner;
 
     @Before()

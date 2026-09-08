@@ -1,4 +1,4 @@
-package testRunner;
+package com.steps.cucumber;
 
 import org.junit.platform.suite.api.*;
 

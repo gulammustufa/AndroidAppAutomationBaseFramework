@@ -1,7 +1,8 @@
 package utility.locators;
 
 import io.appium.java_client.AppiumBy;
+import org.openqa.selenium.By;
 
 public interface TextLocators {
-    AppiumBy logTextBox = (AppiumBy) AppiumBy.accessibilityId("LogTextBox");
+    By logTextBox = AppiumBy.accessibilityId("LogTextBox");
 }

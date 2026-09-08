@@ -18,14 +18,18 @@ To running the android app we need below software and packages.
    - Start the appium server
    - Go to appium inspector.
    - Add below json data in the appium inspector.
+     ```json
      {
      "appium:platformName": "Android",
-     "appium:deviceName": "Samsung Galaxy S20 FE 5G",
-     "appium:udid": "AARZCR909C4QF",
-     "appium:platformVersion": "12",
-     "appium:appPackage": "com.abc.app.development",
-     "appium:appActivity": "com.abc.app.MainActivity"
+     "appium:deviceName": "Samsung Galaxy S24 FE 5G",
+     "appium:udid": "RZCY20FJYAB",
+     "appium:platformVersion": "16",
+     "appium:appPackage": "io.appium.android.apis",
+     "appium:appActivity": "io.appium.android.apis.ApiDemos",
+     "appium:automationName": "UiAutomator2",
+     "appium:noReset": true
      }
+   ```
    
    - Remote Host: localhost
    - Remote Port: 4723
