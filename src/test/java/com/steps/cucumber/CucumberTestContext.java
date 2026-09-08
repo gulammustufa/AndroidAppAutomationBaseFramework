@@ -5,7 +5,6 @@ import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.cucumber.java.Scenario;
 import utility.Constant;
-import utility.locators.PermissionLocators;
 
 import java.net.URL;
 import java.time.Duration;
@@ -14,6 +13,7 @@ import java.util.Map;
 
 import static java.lang.ThreadLocal.withInitial;
 import static org.assertj.core.api.Assertions.assertThat;
+import static utility.DeviceManager.DEVICE_INFO_MAP;
 
 public enum CucumberTestContext {
     CONTEXT;
@@ -49,10 +49,7 @@ public enum CucumberTestContext {
         assertThat(driver).as("App not opened.").isNotNull();
         set("DRIVER", driver);
         getScenarioLogger().log("App opened.");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(60));
-
-        driver.findElement(PermissionLocators.continueButtonLocator).click();
-        driver.findElement(PermissionLocators.okButtonLocator).click();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
     }
 
     public void setScenarioLogger(Scenario scenario) {
@@ -73,23 +70,20 @@ public enum CucumberTestContext {
 
     public UiAutomator2Options getUiAutomatorOptions(DeviceOwners deviceOwner) {
         UiAutomator2Options options = new UiAutomator2Options();
-        switch (deviceOwner) {
-            case Gulammustufa -> options.setUdid("AARZCR909C4QF")
-                    .setDeviceName("Samsung Galaxy S20 FE 5G")
-                    .setPlatformVersion("13");
-            case Dhairya -> options.setUdid("AAZD222FSTG7")
-                    .setDeviceName("Moto G84 5G")
-                    .setPlatformVersion("14");
-            case Nokia -> options.setUdid("AAPNXID19051303526")
-                    .setDeviceName("Nokia 8.1")
-                    .setPlatformVersion("11");
-        }
+        options.setUdid(DEVICE_INFO_MAP.get(deviceOwner).udid())
+                .setDeviceName(DEVICE_INFO_MAP.get(deviceOwner).deviceName())
+                .setPlatformVersion(DEVICE_INFO_MAP.get(deviceOwner).osVersion());
+
         options.setPlatformName("Android")
                 .setAppPackage(Constant.getAppPackage())
                 .autoGrantPermissions()
                 .setAppActivity(Constant.APP_ACTIVITY);
-//        options.setApp(Constant.apkPath) // If we want to install apk from code
-//                .setNoReset(Constant.USE_CACHE);
+
+        if (Constant.INSTALL_APP) {
+            options.setApp(Constant.APK_PATH); // If we want to install apk from code
+        }
+
+        options.setNoReset(Constant.USE_CACHE);
         return options;
     }
 }

@@ -1,11 +1,9 @@
 package com.steps.stepDefinitions;
 
-import com.steps.cucumber.AbstractSteps;
+import com.steps.cucumber.BaseSteps;
 import io.appium.java_client.android.AndroidDriver;
-import io.cucumber.java.en.When;
-import org.openqa.selenium.WebDriver;
 
-public class CommonSteps extends AbstractSteps {
+public class CommonSteps extends BaseSteps {
     private final AndroidDriver driver = testContext().getDriver();
 
 
