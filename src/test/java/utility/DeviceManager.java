@@ -16,8 +16,8 @@ public class DeviceManager extends BaseSteps {
     public static final Map<DeviceOwners, DeviceInfo> DEVICE_INFO_MAP = new HashMap<>();
 
     static {
-        DEVICE_INFO_MAP.put(DeviceOwners.Gulammustufa_S20_FE, new DeviceInfo("RZCR909C4QF", "Samsung S20 FE", "10"));
-        DEVICE_INFO_MAP.put(DeviceOwners.Gulammustufa_S24_FE, new DeviceInfo("RZCY20FJYAH", "Samsung 24 FE", "15"));
+        DEVICE_INFO_MAP.put(DeviceOwners.Gulammustufa_S20_FE, new DeviceInfo("ARZCR909C4QFA", "Samsung S20 FE", "10"));
+        DEVICE_INFO_MAP.put(DeviceOwners.Gulammustufa_S24_FE, new DeviceInfo("BRZCY20FJYAHB", "Samsung 24 FE", "15"));
         DEVICE_INFO_MAP.put(DeviceOwners.Dhairya, new DeviceInfo("CZD222FSTG7C", "Motorola", "14"));
         DEVICE_INFO_MAP.put(DeviceOwners.Nokia, new DeviceInfo("DPNXID19051303526D", "Nokia 8.1", "11"));
     }
