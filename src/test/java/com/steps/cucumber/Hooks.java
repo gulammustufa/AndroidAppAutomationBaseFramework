@@ -20,10 +20,18 @@ public class Hooks extends BaseSteps {
         while (deviceOwner == null) {
             deviceOwner = deviceManager.acquireDevice();
             if (deviceOwner == null) {
+                // No device could be acquired. Distinguish between the two possible causes:
+                //  - No registered device is attached at all -> fail the scenario immediately.
+                //  - Devices are attached but currently busy   -> wait for one to be released.
+                if (!deviceManager.isAnyDeviceConnected()) {
+                    throw new IllegalStateException(
+                            "No device attached. Please connect a registered device and re-run the test.");
+                }
                 try {
-                    Thread.sleep(1000); // Wait if no device is available
+                    Thread.sleep(1000); // All devices busy - wait for one to become available
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
+                    throw new IllegalStateException("Interrupted while waiting for an available device.", e);
                 }
             }
         }
