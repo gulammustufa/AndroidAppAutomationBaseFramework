@@ -12,12 +12,13 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class DeviceManager extends BaseSteps {
     private static final ConcurrentLinkedQueue<DeviceOwners> availableDevices = new ConcurrentLinkedQueue<>();
     private static final Set<DeviceOwners> inUseDevices = Collections.synchronizedSet(new HashSet<>());
+    private static volatile Set<DeviceOwners> connectedDevices = Collections.emptySet();
     private static DeviceManager instance;
     public static final Map<DeviceOwners, DeviceInfo> DEVICE_INFO_MAP = new HashMap<>();
 
     static {
         DEVICE_INFO_MAP.put(DeviceOwners.Gulammustufa_S20_FE, new DeviceInfo("ARZCR909C4QFA", "Samsung S20 FE", "10"));
-        DEVICE_INFO_MAP.put(DeviceOwners.Gulammustufa_S24_FE, new DeviceInfo("BRZCY20FJYAHB", "Samsung 24 FE", "15"));
+        DEVICE_INFO_MAP.put(DeviceOwners.Gulammustufa_S24_FE, new DeviceInfo("RZCY20FJYAH", "Samsung 24 FE", "15"));
         DEVICE_INFO_MAP.put(DeviceOwners.Dhairya, new DeviceInfo("CZD222FSTG7C", "Motorola", "14"));
         DEVICE_INFO_MAP.put(DeviceOwners.Nokia, new DeviceInfo("DPNXID19051303526D", "Nokia 8.1", "11"));
     }
@@ -36,6 +37,15 @@ public class DeviceManager extends BaseSteps {
             inUseDevices.add(device);
         }
         return device;
+    }
+
+    /**
+     * @return true if at least one registered device (present in DEVICE_INFO_MAP) is currently
+     * connected via adb, regardless of whether it is available or already in use. Reflects the
+     * state of the most recent {@link #refreshAvailableDevices()} / {@link #acquireDevice()} call.
+     */
+    public boolean isAnyDeviceConnected() {
+        return !connectedDevices.isEmpty();
     }
 
     public synchronized void releaseDevice(DeviceOwners deviceOwner) {
@@ -72,6 +82,10 @@ public class DeviceManager extends BaseSteps {
 
             // Remove devices that are no longer connected (but not in use)
             availableDevices.removeIf(owner -> !connectedDevices.contains(owner));
+
+            // Publish the current set of connected (registered) devices for callers that need to
+            // distinguish "nothing attached" from "attached but busy".
+            DeviceManager.connectedDevices = new HashSet<>(connectedDevices);
 
             testContext().getScenarioLogger().log("availableDevices = " + availableDevices);
         } catch (Exception e) {
